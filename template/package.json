@@ -1,8 +1,0 @@
-{
-  "name": "lalm-cli-template",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/liwenjie3421/lalm-cli-template.git",
-  "author": "liwenjie <18061753421@163.com>",
-  "license": "MIT"
-}
