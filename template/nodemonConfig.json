@@ -1,7 +1,7 @@
 {
 	"verbose": true,
 	"debug": false,
-	"exec": "node --inspect -r ts-node/register ./src/index.ts -t https://github.com/liwenjie3421/lalm-cli",
+	"exec": "node --inspect -r ts-node/register ./src/parse.ts",
 	"ignore": [
 		"node_modules"
 	],
