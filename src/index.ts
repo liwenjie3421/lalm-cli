@@ -26,6 +26,6 @@ import ora from 'ora'
 // }, 5000)
 
 
-// download('liwenjie3421/lalm-cli#master', './template', { clone: false }, (err) => {
-//     console.log(err || 'download success')
-// })
+download('liwenjie3421/lalm-cli#test', './template', { clone: false }, (err) => {
+    console.log(err || 'download success')
+})
