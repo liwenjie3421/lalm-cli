@@ -7,7 +7,7 @@
 - 可以下载使用我常用的几个模板， 仓库地址：[lalm-cli-template](https://github.com/liwenjie3421/lalm-cli-template)
 
 - 自己创建
-项目目录没有太多要求，只需要有一个`templates`文件夹，然后`lalm-cli`就会遍历该目录下的文件夹，每一个文件夹会被认为是一个模板
+项目目录没有太多要求，只需要有一个`templates`文件夹，然后`lalm-cli`就会遍历该目录下的文件夹，每一个文件夹会被认为是一个模板，可以参考：[lalm-cli-template](https://github.com/liwenjie3421/lalm-cli-template)
 
 ## 安装
 ```
