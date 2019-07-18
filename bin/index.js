@@ -5,33 +5,28 @@ const path = require('path')
 
 const commander = require('commander')
 const inquirer = require('inquirer')
-const download = require('download-git-repo')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const { delDir, copyDir } = require('../lib/utils')
+const { delDir, copyDir, downloadSync } = require('../lib/utils')
 
 commander.parse(process.argv)
+const distDir = commander.args[1]
+const distPath = path.join(process.cwd(), distDir)
 
 ;(async () => {
     const url = commander.args[0].replace(/^.*github.com\//, '')
-    console.log('__dirname', __dirname)
-    const templatesPath = path.join(__dirname, '../template')
-
-    fs.existsSync(templatesPath) && delDir(templatesPath)
-    let spinner = ora()
-    spinner.start(chalk.yellow('downloading template ...'))
+    const downloadTemplatesPath = path.join(__dirname, '../template')
+    fs.existsSync(downloadTemplatesPath) && delDir(downloadTemplatesPath)
 
     try {
-        await new Promise((resolve, reject) => {
-            download(url, templatesPath, { clone: false }, (err) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve()
-                }
-            })
-        })
+        const spinner = ora()
+        
+        const checked = await __checkDistPath()
+        if (!checked) return
+
+        spinner.start(chalk.yellow('downloading template ...'))
+        await downloadSync(url, downloadTemplatesPath)
         spinner.stop()
         console.log(chalk.green('download success!'))
 
@@ -44,29 +39,39 @@ commander.parse(process.argv)
                 choices: templates
             }
         ])
-        const newTemplatePath = path.join(templatesPath, `/templates/${template}`)
-        const distPath = path.join(process.cwd(), commander.args[1])
-        delDir(distPath)
-        return
-        fs.mkdirSync(distPath)
+        const selectedTemplatePath = path.join(downloadTemplatesPath, `/templates/${template}`)
 
-        spinner.start(chalk.yellow(`copying template to ${commander.args[1]}`))
-
-
-        copyDir(newTemplatePath, commander.args[1], (err) => {
-            if (err) {
-                spinner.fail(chalk.red(err.toString()))
-            }
-        })
-
+        spinner.start(chalk.yellow(`copying template to ${distPath}`))
+        copyDir(selectedTemplatePath, distPath)
         spinner.stop()
-        console.log(chalk.green(`create ${commander.args[1]} success`))
-        console.log(`
-        you can: \n
-        $ cd ${distPath}\n
-        $ npm install \n
-    `)
+
+        console.log(chalk.green(`create ${distPath} success`))
+        console.log(`you can:`)
+        console.log(chalk.green(`
+$ cd ${distDir}\n
+$ npm install \n
+        `))
+        
     } catch (err) {
         spinner.fail(chalk.red(err.toString()))
     }
 })()
+
+async function __checkDistPath() {
+    if (fs.existsSync(distPath)) {
+        const { del } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'del',
+                message: `已存在文件夹${distDir}， 是否删除文件夹并继续？(y/n)`,
+                default: 'n'
+            }
+        ])
+        if (del === 'y') {
+            delDir(distPath)
+            return true
+        }
+        return false
+    }
+    return true
+}

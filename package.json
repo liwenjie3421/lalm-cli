@@ -6,6 +6,9 @@
   "bin": {
     "lalm": "bin/index.js"
   },
+  "scripts": {
+    "dev": "node --inspect-brk bin/index.js liwenjie3421/lalm-cli-template test-template"
+  },
   "devDependencies": {},
   "dependencies": {
     "chalk": "^2.4.2",
