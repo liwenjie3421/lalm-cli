@@ -18,10 +18,8 @@ const distPath = path.join(process.cwd(), distDir)
     const url = commander.args[0].replace(/^.*github.com\//, '')
     const downloadTemplatesPath = path.join(__dirname, '../template')
     fs.existsSync(downloadTemplatesPath) && delDir(downloadTemplatesPath)
-
+    const spinner = ora()
     try {
-        const spinner = ora()
-        
         const checked = await __checkDistPath()
         if (!checked) return
 
