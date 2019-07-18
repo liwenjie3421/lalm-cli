@@ -11,7 +11,7 @@
 
 ## 安装
 ```
-    sudo npm install lalm-cli -g
+    npm install lalm-cli -g
 ```
 
 ## 使用
